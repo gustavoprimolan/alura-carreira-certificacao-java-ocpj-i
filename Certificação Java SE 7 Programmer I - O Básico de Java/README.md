@@ -244,4 +244,274 @@ class Teste {
 
 <h1>Aula 02 - Defina a estrutura de uma classe java</h1>
 
+* Na prova será cobrado qual estrutura de um arquivo e de uma classe java.
+* Primeira coisa que o arquivo pode ter é o pacote
+* Cobra a estrutura de uma classe java
+* Só pode ter um pacote.
+* Depois vem os imports, mas a primeira coisa é o pacote. O pacote é opcional, mas sempre vem primeiro quando tem
+* Depois vem classes e interfaces e enums, tanto faz a ordem
+* Comentários entram em qualquer lugar
+* PACOTE, IMPORTACAO;
+* Quando nao importa o pacote, é pq ele esta no pacote padrao (package default). Diretório raiz.
+* Dentro das classes pode haver variáveis (atributos), podem haver construtores.
+* Possível ter nome de atributos, classe, construtor e método com o mesmo nome
+* Arquivo Java pode ter várias classes, varias interfaces varias enums dentro dele.
+* Se houver classes, interfaces, enums. Apenas um pode ser público. Se esse cara é publico ele tem que ter o mesmo nome que o arquivo. Pq? Para ficar fácil de achar ele.
+* Variável estática ou variável de classe.
+* Construtor retorna uma instancia da classe, mas ele nao possui um retorno específico, nao pode ter um tipo para ele retornar.
+* Varíaveis final nao podem ter o seu valor ou sua referência alterada.
+* Variáveis dentro de uma interface é estatica e publica e final;
+* Métodos dentro de uma interface é publico e abstrato mesmo que nao coloque
 
+* Um arquivo java, vários tipos - OK
+* Um arquivo java, um único público - OK
+* Um arquivo java, vários públic - ERRADO
+* Um arquivo java, público com nome do arquivo - OK
+* Um arquivo java, público nome diferente - ERRADO
+
+* Nesta seção, iremos entender a estrutura de um arquivo java, onde inserir as declarações de pacotes e imports e como declarar classes e interfaces.
+
+* Para entender a estrutura de uma classe, vamos ver o arquivo Pessoa.java:
+
+```java
+// Declaração de pacote
+package br.com.caelum.certificacao;
+
+// imports
+import java.util.Date;
+
+// Declaração da classe
+class Pessoa {
+    // conteúdo da classe
+}
+```
+* Pacotes
+    * Pacotes servem para separar e organizar as diversas classes que temos em nossos sistemas. Todas as classes pertencem a um pacote, sendo que, caso o pacote não seja explicitamente declarado, a classe fará parte do que chamamos de pacote padrão, ou default package. Todas as classes no default package se enxergam e podem ser utilizadas entre si. Classes no pacote default não podem ser importadas para uso em outros pacotes:
+
+```java
+// Uma classe no pacote padrão
+class Pessoa {
+    //...
+}
+```
+
+* Para definir qual o pacote a que a classe pertence, usamos a palavra-chave package, seguida do nome do pacote. Só pode existir um único package definido por arquivo, e ele deve ser a primeira instrução do arquivo. Após a definição do package, devemos finalizar a instrução com um ;. Podem existir comentários antes da definição de um pacote:
+
+```java
+// declaração do pacote
+package br.com.caelum.certificacao;
+
+class Pessoa {
+    //...
+}
+```
+* Aproveitando que tocamos no assunto, o package deve ser a primeira instrução de código que temos declarada em nosso arquivo. Comentários não são considerados parte do código, portanto, podem existir em qualquer lugar do arquivo java sem restrições.
+
+* Para inserir comentário em nosso código, temos as seguintes formas:
+
+```java
+// comentário de linha
+
+/*
+   comentário de
+   multiplas linhas
+ */
+class /* comentário no meio da linha */ Pessoa {
+
+    /**
+     *  JavaDoc, repare que a primeira linha do comentário tem
+     *  2 asteriscos
+     */
+    public void metodo() {
+    }
+}
+```
+* Para saber mais: JavaDoc
+* Classe
+    * Uma classe é a forma no Java onde definimos os atributos e comportamentos de um objeto. A declaração de uma classe pode ser bem simples, apenas a palavra class seguida do nome e de {}:
+
+```java
+class Pessoa {}
+```
+
+* Existem outros modificadores que podem ser usados na definição de uma classe, mas veremos essas outras opções mais à frente, onde discutiremos esses modificadores com mais detalhes.
+
+* Vale lembrar que java é case sensitive e Class é o nome de uma classe e não podemos usá-lo para definir uma nova classe.
+
+* Dentro de uma classe, podemos ter variáveis, métodos e construtores. Essas estruturas são chamadas de membros da classe.:
+
+
+```java
+class Pessoa {
+
+    String nome;
+    String sobrenome;
+
+    Pessoa(String nome, String sobrenome) {
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+    }
+
+    public String getNomeCompleto() {
+        return this.nome + this.sobrenome;
+    }
+}
+```
+* Nomes dos membros
+* Variaveis
+    * Usando como exemplo a classe Pessoa definida anteriormente, nome e sobrenome são variáveis. A declaração de variáveis é bem simples, sempre o tipo seguido do nome da variável.
+
+* Dizemos que essas são variáveis de instância, pois existe uma cópia delas para cada objeto Pessoa criado em nosso programa. Cada cópia guarda o estado de uma certa instância desses objetos.
+
+* Existem ainda variáveis que não guardam valores ou referências para uma determinada instância, mas sim um valor compartilhado por todas as instâncias de objetos. Essas são variáveis estáticas, definidas com a palavra-chave static. Veremos mais sobre esse tipo de membro mais à frente.
+
+* Métodos
+    * A declaração de métodos é um pouquinho diferente pois precisamos do tipo do retorno, seguido do nome do método e seguido de parênteses, sendo que pode ou não haver parâmetros de entrada desse método. Cada parâmetro é uma declaração de variável em si. Essa linha do método, onde está definido o retorno, o nome e os parâmetros é onde temos a assinatura do método. Cuidado, pois a assinatura de um método inclui somente o nome do método e os tipos dos parâmetros.
+
+* Assim como variáveis, métodos também podem ser static, como veremos mais adiante.
+
+* Construtores
+    * Uma classe pode possuir zero ou vários construtores. Nossa classe Pessoa possui um construtor que recebe como parâmetros o nome e o sobrenome da pessoa. A principal diferença entre a declaração de um método e um construtor é que um construtor não tem retorno e possui o mesmo nome da classe.
+
+* Métodos com o mesmo nome da classe
+    * Note que um construtor pode ter um return vazio:
+
+```java
+class X {
+    int j = -100;
+
+    X(int i) {
+        if (i > 1)
+            return;
+        j = i;
+    }
+}
+```
+* Caso o valor seja maior que 1, o valor de j será -100, caso contrário, será o mesmo valor de i.
+
+* Interfaces
+    * Além de classes, também podemos declarar interfaces em nossos arquivos java. Para definir uma interface usamos a palavra reservada interface:
+
+```java 
+interface Autenticavel {
+
+    final int TAMANHO_SENHA = 8;
+
+    void autentica(String login, String senha);
+}
+```
+* Em uma interface, devemos apenas definir a assinatura do método, sem a sua implementação. Além da assinatura de métodos, também é possível declarar constantes em interfaces.
+
+* Multíplas estruturas em um arquivo
+    * Em java, é possível definir mais de uma classe/interface em um mesmo arquivo java, embora devamos seguir algumas regras:
+
+* Podem ser definidos em qualquer ordem;
+    * Se existir alguma classe/interface pública, o nome do arquivo deve ser o mesmo dessa classe/interface;
+    * Só pode existir uma classe/interface pública por arquivo;
+    * Se não houver nenhuma classe/interface pública, o arquivo pode ter qualquer nome.
+* Logo, são válidos:
+
+```java
+// arquivo1.java
+interface Bar {}
+
+class Foo {}
+
+// Foo.java
+public class Foo {}
+
+interface X {}
+```
+* Pacotes e imports em arquivos com múltiplas estruturas
+    * As regras de pacotes e imports valem também para arquivos com múltiplas estruturas definidas. Caso exista a definição de um pacote, ela vale para todas as classes/interfaces definidas nesse arquivo, e o mesmo vale para imports.
+
+<h2>Exercício 1</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir sem nenhum parâmetro na linha de comando, como java D:
+
+```java
+package a.b.c;
+
+import java.util.*;
+
+class D {
+    public static void main(String[] args) {
+        ArrayList<String> lista = new ArrayList<String>();
+
+        for (String arg : args) {
+            if (new E().existe(arg))
+                lista.add(arg);
+        }
+    }
+}
+
+import java.io.*;
+
+class E {
+    public boolean existe(String nome) {
+        File f = new File(nome);
+        return f.exists();
+    }
+}
+```
+
+* R: O arquivo não compila pois não podemos ter um import após a definição de uma classe.
+
+<h2>Exercício 2</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class Teste {
+    int Teste = 305;
+
+    void Teste() {
+        System.out.println(Teste);
+    }
+
+    public static void main(String[] args) {
+        new Teste();
+    }
+}
+```
+
+* R: O código compila e roda, não imprimindo nada, pois não chamamos o método Teste.
+
+<h2>Exercicio 3</h2>
+
+* Escolha a opção adequada ao tentar compilar o arquivo a seguir:
+
+```java
+package br.com.teste;
+
+import java.util.ArrayList;
+```
+
+* R: O código compila sem erros: a ordem package e import está adequada, e os tipos são opcionais dentro de um arquivo java.
+
+<h2>Exercício 4</h2>
+
+* Escolha a opção adequada ao tentar compilar o arquivo A.java:
+
+```java
+class A implements B { //A
+}
+public interface B { //B
+}
+class C extends A { //C
+}
+class D extends A, implements B { //D
+}
+```
+* R: Uma vez que o arquivo chama A.java, o único tipo público que pode existir dentro dele deve se chamar A, o que não é verdade: tentamos definir um tipo B público. Além disso, após o extends não podemos colocar uma ,.
+
+<h1>Aula 03 - Crie aplicações Java executáveis com um método main</h1>
+
+* Qual a diferença entre uma classe normal e uma classe que pode ser executada pela linha de comando.
+* Toda classe chamada na linha de comando deve possuir o método main.
+* As classes que possuem o método main possuem sua privacidade como public
+* O main precisa ser público
+* O método precisa ser estático
+* O main tem que devolver void
+* O main tem que receber um array [] ou var args (...)
+* O main da varíavel args nao precisa necessárimanete ser args, pode ser outro nome, pois nao influencia na chamada do método
