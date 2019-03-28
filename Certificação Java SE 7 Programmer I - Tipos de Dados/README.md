@@ -380,3 +380,133 @@ int 4num;     // inválido, começa com número
 int av#f;     // inválido, #
 int num.spc; // inválido, ponto no meio
 ```
+
+<h2>Exercício 01</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        int
+        idade
+        = 100;
+        System.out.println(idade);
+    }
+}
+```
+
+* R: O código compila e imprime 100. Podemos ter espaços em branco desde que não quebre uma palavra-chave, nome de método, classe etc. ao meio. Onde pode ter um espaço em branco, pode haver vários.
+
+<h2>Exercício 02</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        int idade;
+        if(args.length > 0) {
+            idade = Integer.parseInt(args[0]);
+        } else {
+            System.err.println("Por favor passe sua idade como 
+                                primeiro parâmetro");
+        }
+        System.out.println("Sua idade é " + idade);
+    }
+}
+```
+
+* R: O código não compila pois tentamos acessar a variável idade que pode não ter sido inicializada. Não é certeza (somente se cair no if ela será inicializada).
+
+<h2>Exercício 03</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        boolean array = new boolean[300];
+        System.out.println(array[3]);
+    }
+}
+```
+
+* R: Não compila, do lado direito da atribuição temos um array de boolean e do lado esquerdo uma variável simples do tipo boolean.
+
+<h2>Exercício 04</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        boolean argumentos;
+        if(args.length > 0)
+            argumentos = 1;
+        else
+            argumentos = 0;
+        System.out.println(argumentos);
+    }
+}
+```
+
+* R: Não compila pois boolean em Java só pode ser false ou true.
+
+<h2>Exercício 05</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        int n = 09;
+        int m = 03;
+        int x = 1_000;
+        System.out.println(x - n + m);
+    }
+}
+```
+
+* O número octal 09 não existe. Você não precisa aprender a transformar uma base em outra, mas é importante lembrar que binários são compostos de 0s e 1s, octais são compostos de 0s até 7s, hexadecimais são de 0s até 9s e As até Fs (maiúsculo ou minúsculo). O caractere _ é permitido desde que dos dois lados dele tenhamos algarismos válidos, que é o caso de 1_000. Portanto, o único número inválido é 09 (por curiosidade, o número 9 em base octal é 011).
+
+<h2>Exercício 06</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        for(char c='a';c <= 'z';c++) {
+            System.out.println(c);
+        }
+    }
+}
+```
+
+* R: Compila e imprime o alfabeto pois caracteres são números em Java.
+
+<h2>Exercício 07</h2>
+
+* Qual das palavras a seguir não é reservada em Java?
+* R: instanceOf não é palavra reservada: note a letra maiúscula no meio dela. Nenhuma palavra-chave em Java possui caractere maiúsculo.
+
+<h2>Exercício 08</h2>
+
+* Escolha a opção adequada ao tentar compilar e rodar o arquivo a seguir:
+
+```java
+class A {
+    public static void main(String[] args) {
+        boolean BOOLEAN = false;
+        if(BOOLEAN) {
+            System.out.println("Sim");
+        }
+    }
+}
+```
+
+* R: Compila e roda, não imprimindo nada. Lembre-se que os identificadores são case-sensitive.
+
+<h1>Aula 02 - Diferenciar entre variáveis de referências a objetos e tipos primitivos</h1>
+
