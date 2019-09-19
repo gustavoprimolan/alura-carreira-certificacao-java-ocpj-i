@@ -429,3 +429,168 @@ a = b = c; // b = 30, portanto a = 30
 int a = 15, b = 20, c = 30;
 a = (b = c + 5) + 5; // c = 30, portanto b = 35, portanto a = 40
 ```
+
+<h1>Aula 06 - Operador ternário, de referência e de concatenação</h1>
+
+* Operador ternário - Condicional
+* Há também um operador para controle de fluxo do programa, como um if. É chamado de operador ternário. Se determinada condição acontecer, ele vai por um caminho, caso contrário vai por outro.
+
+* A estrutura do operador ternário é a seguinte:
+
+* variável = teste_booleano ? valor_se_verdadeiro : valor_se_falso;
+
+```java
+int i = 5;
+System.out.println(i == 5 ? "verdadeiro": "falso");// verdadeiro
+System.out.println(i != 5 ? 1: 2);                   // 2
+
+String mensagem = i % 2 == 0 ? "é par" : "é ímpar";
+```
+* O operador condicional sempre tem que retornar valores que podemos usar para atribuir, imprimir etc.
+
+* Operador de referência
+* Para acessar os atributos ou métodos de um objeto precisamos aplicar o operador . (ponto) em uma referência. Você pode imaginar que esse operador navega na referência até chegar no objeto.
+
+```java
+String s = new String("Caelum");
+
+// Utilizando o operador "." para acessar um 
+// objeto String e invocar um método.
+int length = s.length();
+```
+* Concatenação de Strings
+* Quando usamos Strings, podemos usar o + para denotar concatenação. É a única classe que aceita algum operador fora o ponto.
+
+* Em Java, não há sobrecarga de operadores como em outras linguagens. Portanto, não podemos escrever nossas próprias classes com operadores diversos.
+
+* StringBuilder
+* A concatenação de Strings é um syntax sugar que o próprio compilador resolve. No código compilado, na verdade, é usado um StringBuilder.
+
+* Precedência
+* Não é necessário decorar a precedência de todos operadores do Java, basta saber o básico, que primeiro são executados pré-incrementos/decrementos, depois multiplicação/divisão/mod, passando para soma/subtração, depois os shifts (<<, >>, >>>) e, por último, os pós-incrementos/decrementos.
+
+* As questões da certificação não entram em mais detalhes que isto.
+
+* Pontos importantes
+* Na atribuição de um valor para uma variável primitiva, o valor deve ser do mesmo tipo da variável ou de um menos abrangente.
+* EXCEÇÃO À REGRA: Para os tipos byte, short e char, em atribuições com literais do tipo int, o compilador verifica se o valor a ser atribuído está no range do tipo da variável. Toda variável não primitiva está preparada somente para armazenar referências para objetos que sejam do mesmo tipo dela. Toda comparação e toda operação lógica devolve boolean. O resultado de toda operação aritmética é no mínimo int ou do tipo da variável mais abrangente que participou da operação. A comparação de valores numéricos não considera os tipos dos valores. As referências e os valores boolean só podem ser comparados com == ou !=. Toda atribuição é por cópia de valor.
+
+* Observação: O recurso do autoboxing permite fazer algumas operações diferentes envolvendo variáveis não primitivas. Discutiremos sobre autoboxing adiante.
+
+<h1>Aula 07 - Casting</h1>
+
+* Casting de tipos primitivos
+* Não podemos atribuir a uma variável de um tipo um valor que não é compatível com ela:
+
+```java
+double d = 3.14;
+int i = d;
+```
+
+* Só podemos fazer essas atribuições se os valores forem ::compatíveis::. Compatível é quando um tipo cabe em outros, ou seja, ele só cabe se o ::range:: (alcance) dele for mais amplo que o do outro.
+
+* byte -> short -> int -> long -> float -> double
+
+* char -> int
+
+* Se estivermos convertendo de um tipo que vai da esquerda para a direita nessa tabelinha, não precisamos de casting, a autopromoção fará o serviço por nós.
+
+* Se estamos indo da direita para a esquerda, precisamos do ::casting:: e não importam os valores que estão dentro. Exemplo:
+
+```java
+    double d = 0;
+    float  f = d;
+```
+
+* Esse código não compila sem um casting! O casting é a maneira que usamos para moldar uma variável de um tipo em outro. Nós estamos avisando o compilador que sabemos da possibilidade de perda de precisão ou truncamento, mas nós realmente queremos fazer isso:
+
+```java
+    float  f = (float) d;
+```
+
+* Podemos fazer casting entre ponto flutuante e inteiro, o resultado será o número truncado, sem as casas decimais:
+
+```java
+    double d = 3.1415;
+    int i = (int) d; // 3
+```
+* Dica
+* Não é preciso decorar a sequência int->long->float etc. Basta lembrar os alcances das variáveis. Por exemplo, o char tem dois bytes e guarda um número positivo. Será então que posso atribuir um char a um short? Não, pois um short tem 2 bytes, e usa meio a meio entre os números positivos e negativos.
+
+<h1>Aula 08 - Use parentêses para sobrescrever a precedência de operadores</h1>
+
+* Às vezes desejamos alterar a ordem de precedência de uma linha, e nesses instantes usamos os parênteses:
+
+```java
+int a = 15 * 4 + 1; // 15 * 4 = 60, depois 60 + 1 = 61
+int b = 15 * (4 + 1); // 4 + 1 = 5, depois 15 * 5 = 75
+```
+
+* Devemos tomar muito cuidado na concatenação de String e precedência:
+
+```java
+System.out.println(15 + 0 + " é cento e cinquenta"); 
+// 15 é cento e cinquenta
+System.out.println(15 + (0 + " é cento e cinquenta")); 
+// 150 é cento e cinquenta
+
+System.out.println(("guilherme" + " silveira").length()); 
+// 18
+```
+
+<h1>Aula 09 - Teste a igualdade entre Strings e outros objetos usando == e equals() - Parte 1</h1>
+
+* Observe o seguinte código que cria duas Strings:
+
+```java
+String nome1 = new String("Mario");
+String nome2 = new String("Mario");
+```
+
+* Como já estudamos anteriormente, o operador == é utilizado para comparação. Neste caso, como se tratam de objetos, irá comparar as duas referências e ver se apontam para o mesmo objeto:
+
+```java
+String nome1 = new String("Mario");
+String nome2 = new String("Mario");
+
+System.out.println(nome1 == nome2); // imprime false
+```
+
+* Até aqui tudo bem. Mas vamos alterar um pouco nosso código, mudando a maneira de criar nossas Strings, e rodar novamente:
+
+```java
+String nome1 = "Mario";
+String nome2 = "Mario";
+
+
+System.out.println(nome1 == nome2); // o que imprime?
+```
+
+* Ao executar o código, vemos que ele imprime true. O que aconteceu?
+
+* Pool de Strings
+* O Java mantém um ::pool:: de objetos do tipo String. Antes de criar uma nova String, primeiro o Java verifica neste pool se uma String com o mesmo conteúdo já existe; caso sim, ele a reutiliza, evitando criar dois objetos exatamente iguais na memória. Como as duas referências estão apontando para o mesmo objeto do pool, o == retorna true.
+
+* Mas por que isso não aconteceu antes, com nosso primeiro exemplo? O Java só coloca no pool as Strings criadas usando literais. Strings criadas com o operador new não são colocadas no pool automaticamente.
+
+```java
+String nome1 = "Mario"; //será colocada no pool
+String nome2 = new String("Mario"); 
+/*  
+"Mario" é colocado, mas nome2 é outra 
+referência, não colocada no pool
+*/
+```
+* Sabendo disso, temos que ter cuidado redobrado quando comparando Strings usando o operador ==:
+
+```java
+String s1 = "string";
+String s2 = "string";
+String s3 = new String("string");
+
+System.out.println(s1 == s2); // true, mesma referencia
+System.out.println(s1 == s3); // false, referências diferentes
+System.out.println(s1.equals(s3)); // true, mesmo conteúdo
+```
+* Repare que, mesmo sendo instâncias diferentes, quando comparadas usando o método equals, o retorno é true, caso o conteúdo das Strings seja o mesmo.
+
