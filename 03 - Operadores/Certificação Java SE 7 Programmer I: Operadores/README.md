@@ -594,3 +594,197 @@ System.out.println(s1.equals(s3)); // true, mesmo conteúdo
 ```
 * Repare que, mesmo sendo instâncias diferentes, quando comparadas usando o método equals, o retorno é true, caso o conteúdo das Strings seja o mesmo.
 
+<h1>Teste a igualdade entre Strings e outros objetos usando == e equals() - Parte 2</h1>\
+
+* Quando concatenamos literais, a String resultante também será colocada no pool.
+
+```java
+String ab = "a" + "b";
+System.out.println("ab" == ab); // true
+```
+
+* Mas isso é verdade apenas usando literais em ambos os lados da concatenação. Se algum dos objetos não for um literal, o resultado será um novo objeto, que não estará no pool:
+
+```java
+String a = "a";
+String ab = a + "b"; //usando uma referência e um literal
+System.out.println("ab" == ab); // false
+```
+
+* Sabemos que Strings são imutáveis, e que cada método chamado em uma String retorna uma nova String, sem alterar o conteúdo do objeto original. Esses objetos resultantes de retornos de métodos não são buscados no pool, são novos objetos:
+
+```java
+String str = "um texto qualquer";
+String txt1 = "texto";
+String txt2 = str.substring(3, 8); //cria uma nova string
+System.out.println(txt1 == txt2); // false
+System.out.println(txt1.equals(str.substring(3, 8))); // true
+```
+* os métodos de String sempre criam novos objetos?
+* Nem sempre. Se o retorno do método for exatamente o conteúdo atual do objeto, nenhum objeto novo é criado:
+
+```java
+String str = "HELLO WORLD";
+String upper = str.toUpperCase();          // já está maiúscula
+String subs = str.substring(0,11);         // string completa
+System.out.println(str == upper);          // true
+System.out.println(str == subs);           // true
+System.out.println(str == str.toString()); // true
+```
+
+* Contando Strings
+* Uma questão recorrente na prova é contar quantos objetos do tipo String são criados em um certo trecho de código. Veja o código a seguir e tente descobrir quantos objetos String são criados:
+
+```java
+String h = new String ("hello ");
+String h1 = "hello ";
+String w = "world";
+
+System.out.println("hello ");        
+System.out.println(h1 + "world");    
+System.out.println("Hello " == h1);
+```
+
+* E então? Vamos ver passo a passo:
+
+```java
+//Cria 2 objetos, um literal (que vai para o pool) e o outro 
+//com o new
+String h = new String ("hello ");
+
+//nenhum objeto criado, usa o mesmo do pool
+String h1 = "hello ";
+//novo objeto criado e inserido no pool
+String w = "world"; 
+
+//nenhum  objeto criado, usa do pool
+System.out.println("hello ");
+
+//criado um novo objeto resultante da concatenação,
+// mas este não vai para o pool
+System.out.println(h1 + "world");
+
+//Novo objeto criado e colocado no pool (Hello com H maiúsculo).
+System.out.println("Hello " == h1);     // 1
+```
+
+* Logo temos 5 Strings criadas.
+
+* Cuidado com String já colocadas no pool
+* Para descobrir se uma String foi criada e colocada no pool é necessário prestar muita atenção ao contexto do código e ao enunciado da questão. A String só é colocada no pool na primeira execução do trecho de código. Cuidado com questões que criam Strings dentro de métodos, ou que dizem em seu enunciado que o método já foi executado pelo menos uma vez:
+
+```java
+public class Testes {
+    public static void main(String[] args) {
+        for(int i = 0; i< 10; i++)
+            System.out.println(metodo());
+    }
+
+    private static String metodo() {
+        String x = "x";
+        return x.toString();
+    }
+}
+```
+
+* Ao executar essa classe, apenas um objeto String será criado. O único lugar onde a String é criada é na linha 8 do código.
+
+
+<h1>Aula 11 - Teste a igualdade entre Strings e outros objetos usando == e equals() - Parte 3</h1>
+
+* O método equals
+* Para comparar duas referências, podemos sempre usar o operador ==. Dada a classe Cliente:
+
+```java
+class Cliente {
+    private String nome;
+    Cliente(String nome) {
+        this.nome = nome;
+    }
+}
+
+Cliente c1 = new Cliente("guilherme");
+Cliente c2 = new Cliente("mario");
+System.out.println(c1==c2); // false
+System.out.println(c1==c1); // true
+
+Cliente c3 = new Cliente("guilherme");
+System.out.println(c1==c3); 
+// false, pois não é a mesma 
+// referência: são objetos diferentes na memória
+```
+
+* Para comparar os objetos de uma outra maneira, que não através da referência, podemos utilizar o método equals, cujo comportamento padrão é fazer a simples comparação com o ==:
+
+```java
+Cliente c1 = new Cliente("guilherme");
+Cliente c2 = new Cliente("mario");
+System.out.println(c1.equals(c2)); // false
+System.out.println(c1.equals(c1)); // true
+
+Cliente c3 = new Cliente("guilherme");
+System.out.println(c1.equals(c3)); 
+// false, pois não é a mesma 
+// referência: são objetos diferentes na memória
+```
+
+* Isso é, existe um método em Object que você pode reescrever para definir um critério de comparação de igualdade. Classes como String, Integer e muitas outras possuem esse método reescrito, assim new Integer(10) == new Integer(10) dá false, mas new Integer(10).equals(new Integer(10)) dá true.
+
+* É interessante reescrever esse método quando você julgar necessário um critério de igualdade diferente que o == retorna. Imagine o caso de nosso Cliente:
+
+```java
+class Cliente {
+    private String nome;
+    Cliente(String nome) {
+        this.nome = nome;
+    }
+
+    public boolean equals(Object o) {
+        if (! (o instanceof Cliente)) {
+            return false;
+        }
+        Cliente outro = (Cliente) o;
+        return this.nome.equals(outro.nome);
+    }
+}
+```
+
+* O método equals não consegue tirar proveito do generics, então precisamos receber Object e ainda verificar se o tipo do objeto passado como argumento é realmente uma Cliente (o contrato do método diz que você deve retornar false, e não deixar lançar exception em um caso desses). Agora sim, podemos usar o método equals como esperamos:
+
+```java
+Cliente c1 = new Cliente("guilherme");
+Cliente c2 = new Cliente("mario");
+System.out.println(c1.equals(c2)); // false
+System.out.println(c1.equals(c1)); // true
+
+Cliente c3 = new Cliente("guilherme");
+System.out.println(c1.equals(c3)); // true
+```
+
+* Cuidado ao sobrescrever o método equals: ele deve ser público, e deve receber Object. Caso você receba uma referência a um objeto do tipo Cliente, seu método não está sobrescrevendo aquele método padrão da classe Object, mas sim criando um novo método (overload). Por polimorfismo o compilador fará funcionar neste caso pois o compilador fará a conexão ao método mais específico, entre Object e Cliente, ele escolherá o método que recebe Cliente:
+
+```java
+class Cliente {
+    private String nome;
+    Cliente(String nome) {
+        this.nome = nome;
+    }
+
+    public boolean equals(Cliente outro) {
+        return this.nome.equals(outro.nome);
+    }
+}
+
+Cliente c1 = new Cliente("guilherme");
+Cliente c2 = new Cliente("mario");
+System.out.println(c1.equals(c2)); // false
+System.out.println(c1.equals(c1)); // true
+
+Cliente c3 = new Cliente("guilherme");
+System.out.println(c1.equals(c3)); // true
+System.out.println(c1.equals((Object) c3)); 
+// false, o compilador não sabe que Object é cliente, 
+// invoca o equals tradicional, e azar do desenvolvedor
+```
+
+* Mas caso você use alguma biblioteca (como a API de coleções e de ArrayList do Java), o resultado não será o esperado.
