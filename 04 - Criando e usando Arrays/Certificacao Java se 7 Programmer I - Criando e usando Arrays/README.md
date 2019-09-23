@@ -278,3 +278,261 @@ System.out.println(clientes[0].getNome()); // silveira
     System.out.println(strings.getClass().getSuperclass()); 
     // java.lang.Object
 ```
+
+<h1>Aula 03 - Declare, instancie, inicialize e use um array multi-dimensional</h1>
+
+* Podemos generalizar a ideia de array para construir arrays de duas dimensões, em outras palavras, array de arrays. Analogamente, podemos definir arrays de quantas dimensões quisermos.
+
+* Declaração:
+
+```java
+// Um array de duas dimensões.
+int[][] tabela;
+
+// Um array de três dimensões.
+int[][] cubo[];
+
+// Um array de quatro dimensões.
+int[] [][]hipercubo[];
+
+// Perceba que as dimensões podem ser definidas do lado 
+// esquerdo ou direito da variável.
+Inicialização:
+
+
+// Inicializando a primeira dimensão com 10 e a segunda com 15
+tabela = new int[10][15];
+
+// Inicializando a primeira dimensão com 10 e deixando as outras
+// para serem iniciadas depois
+cubo = new int[10][][];
+
+// Inicializando com valores
+int[][] teste = new int[][]{{1,2,3},{3,2,1},{1,1,1}};
+```
+
+* Acesso:
+
+```java
+// Acessando a posição (0,1)
+System.out.println(tabela[0][1]);
+```
+
+* Podemos criar um array que não precisa ser "quadrado", ele pode ter tamanhos estranhos:
+
+```java
+int[][] estranha = new int[2][];
+estranha[0] = new int[20];
+estranha[1] = new int[10];
+for(int i=0;i<estranha.length;i++) {
+    System.out.println(estranha[i].length); // imprime 20 e 10
+}
+```
+
+<h1>Declare e use uma ArrayList</h1>
+
+* Nesta prova, veremos somente a ArrayList, uma lista que usa internamente um array. Rápida no método get, pois sua estrutura interna permite acesso aleatório (random access) em tempo constante.
+
+* Jamais se esqueça de importar a ArrayList:
+
+```java
+import java.util.ArrayList;
+```
+
+* O primeiro passo é criar uma ArrayList vazia de Strings:
+
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+```
+
+* A ArrayList herda diversos métodos abstratos e concretos e veremos vários deles aqui, dentre esses, os principais para a certificação, vindos da interface Collection.
+
+* Por exemplo, para adicionar itens, fazemos:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+```
+
+* Para remover e verificar a existência do mesmo na lista:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+
+System.out.println(nomes.contains("java")); // true
+System.out.println(nomes.contains("c#")); // false
+
+// true, encontrado e removido
+boolean removido = nomes.remove("java"); 
+
+System.out.println(nomes.contains("java")); // false
+System.out.println(nomes.contains("c#")); // false
+```
+
+* Note que o remove remove somente a primeira ocorrência daquele objeto.
+
+* Podemos também verificar o tamanho de nossa ArrayList:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+System.out.println(nomes.size()); // imprime 2
+```
+
+* E convertê-la para um array:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+
+Object[] nomesComoString = nomes.toArray();
+```
+
+* Caso desejarmos um array de String, devemos indicar isso ao método toArray de duas formas diferentes:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+
+String[] nomes2 = nomes.toArray(new String[0]);
+String[] nomes3 = nomes.toArray(new String[nomes.size()]);
+```
+
+* Ambas passam um array de String: o primeiro menor e o segundo com o tamanho suficiente para os elementos. Se ele possui o tamanho suficiente, ele mesmo será usado, enquanto que, se o tamanho não é suficiente, o toArray cria um novo array do mesmo tipo.
+
+* Além disso, podemos adicionar uma coleção inteira em outra:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+nomes.add("java");
+
+ArrayList<String> paises = new ArrayList<String>();
+paises.add("coreia");
+paises.add("brasil");
+
+ArrayList<String> tudo = new ArrayList<String>();
+tudo.addAll(nomes);
+tudo.addAll(paises);
+System.out.println(tudo.size()); // imprime 4
+```
+
+* Outros métodos são específicos da interface List e recebem uma posição específica onde você quer colocar ou remover algo do array usado na ArrayList. O método get devolve o elemento na posição desejada, lembrando que começamos sempre com 0:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+System.out.println(nomes.get(0)); // imprime certificação
+```
+
+* Já o método add foi sobrecarregado para receber a posição de inclusão:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("certificação");
+System.out.println(nomes.get(0)); // imprime certificação
+
+nomes.add(0, "java");
+System.out.println(nomes.get(0)); // imprime java
+System.out.println(nomes.get(1)); // imprime certificação
+```
+
+* O mesmo acontece para o método remove:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("java");
+nomes.add("certificação");
+
+String removido = nomes.remove(0); // retorna java
+System.out.println(nomes.get(0)); // imprime certificação
+```
+
+* E o método set, que serve para alterar o elemento em determinada posição:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("java");
+nomes.set(0, "certificação");
+
+System.out.println(nomes.get(0)); // imprime certificação
+System.out.println(nomes.size()); // imprime 1
+```
+
+* Os métodos indexOf e lastIndexOf retornam a primeira ou a última posição que possui o elemento desejado. Caso esse elemento não esteja na lista, ele retorna -1:
+
+```java
+ArrayList<String> nomes = new ArrayList<String>();
+nomes.add("guilherme");
+nomes.add("mario");
+nomes.add("paulo");
+nomes.add("mauricio");
+nomes.add("adriano");
+nomes.add("alberto");
+nomes.add("mario");
+
+System.out.println(nomes.indexOf("guilherme")); // 0
+System.out.println(nomes.indexOf("mario")); // 1
+System.out.println(nomes.indexOf("joao")); // -1
+System.out.println(nomes.lastIndexOf("mario")); // 6
+System.out.println(nomes.lastIndexOf("joao")); // -1
+```
+
+<h1>Aula 05 - Declare e use um ArrayList - Iterator e o enhanced for</h1>
+
+* A interface Iterator define uma maneira de percorrer coleções. Isso é necessário porque, em coleções diferentes de List, não possuímos métodos para pegar o enésimo elemento. Como, então, percorrer todos os elementos de uma coleção?
+
+* hasNext: retorna um booleano indicando se ainda há elementos a serem percorridos por esse iterador;
+* next: pula para o próximo elemento, devolvendo-o;
+* remove: remove o elemento atual da coleção.
+* O código que costuma aparecer para percorrer uma coleção é o seguinte:
+
+```java
+    Collection<String> strings = new ArrayList<String>();
+    Iterator<String> iterator = strings.iterator();
+    while (iterator.hasNext()) {
+        String atual = iterator.next();
+        System.out.println(atual);
+    }
+```
+
+* O enhanced-for também pode ser usado nesse caso:
+
+```java
+    Collection<String> strings = new ArrayList<String>();
+    for (String atual : strings) {
+        System.out.println(atual);    
+    }
+```
+
+* O método equals em coleções
+
+* A maioria absoluta das coleções usa o método equals na hora de buscar por elementos, como nos métodos contains e remove. Se você deseja ser capaz de remover ou buscar elementos, terá que provavelmente sobrescrever o método equals para refletir o conceito de igualdade em que está interessado, e não somente a igualdade de referência (implementação padrão do método).
+
+* Cuidado ao tentar sobrescrever o método equals, se você escrevê-lo recebendo um tipo específico em vez de Object, não o estará sobrescrevendo, e o ArrayList continuará invocando o código antigo, a implementação padrão de equals!
+
+* ArrayList e referências
+* Vale lembrar que Java sempre trabalha com referências para objetos, e não cria cópias de objetos cada vez que os atribuímos a uma variável ou referência:
+
+```java
+Cliente guilherme = new Cliente();
+guilherme.setNome("guilherme");
+
+ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+clientes.add(guilherme);
+
+System.out.println(guilherme.getNome()); // guilherme
+System.out.println(clientes.get(0).getNome()); // guilherme
+
+guilherme.setNome("Silveira");
+
+System.out.println(guilherme.getNome()); // Silveira
+System.out.println(clientes.get(0).getNome()); // Silveira
+```
